@@ -34,6 +34,7 @@ public class StudentCourse {
     }
 
     public String getNpm() {
+        if (npm == null) return null;
         return npm.trim();
     }
 

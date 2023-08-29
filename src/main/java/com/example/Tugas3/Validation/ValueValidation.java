@@ -69,7 +69,7 @@ public class ValueValidation {
      */
     public boolean inRange(int input, String nameVar, int minRange, int maxRange) {
         if (input < minRange || input > maxRange) {
-            message = "The value of `" + nameVar + "` is out of range." +
+            message = "The value of `" + nameVar + "` is out of range. " +
                     "The value must be between " + minRange + " and " + maxRange + "!";
             return false;
         }

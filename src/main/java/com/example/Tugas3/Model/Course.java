@@ -22,6 +22,7 @@ public class Course {
     }
 
     public String getName() {
+        if (name == null) return null;
         return name.trim();
     }
 

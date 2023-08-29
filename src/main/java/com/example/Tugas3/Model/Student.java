@@ -24,10 +24,12 @@ public class Student {
     }
 
     public String getNpm() {
+        if (npm == null) return null;
         return npm.trim();
     }
 
     public String getName() {
+        if (name == null) return null;
         return name.trim();
     }
 
@@ -44,6 +46,7 @@ public class Student {
     }
 
     public String getGender() {
+        if (gender == null) return null;
         return gender.trim();
     }
 
@@ -52,6 +55,7 @@ public class Student {
     }
 
     public String getAddress() {
+        if (address == null) return null;
         return address.trim();
     }
 
@@ -60,6 +64,7 @@ public class Student {
     }
 
     public String getPhoneNumber() {
+        if (phoneNumber == null) return null;
         return phoneNumber.trim();
     }
 

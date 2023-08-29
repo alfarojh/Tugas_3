@@ -18,6 +18,7 @@ public class Major {
     }
 
     public String getName() {
+        if (name == null) return null;
         return name.trim();
     }
 
