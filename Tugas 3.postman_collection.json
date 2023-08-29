@@ -13,25 +13,36 @@
 					"name": "Get",
 					"request": {
 						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "Get By Id",
-					"request": {
-						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/members/2",
+							"raw": "http://localhost:8080/majors",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
-								"2"
+								"majors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/majors/01",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"majors",
+								"01"
 							]
 						}
 					},
@@ -58,7 +69,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"        dsfsf\",\n    \"address\": \"Maluku\",\n    \"phoneNumber\": \"384374923423\"\n}",
+							"raw": "{\n    \"name\": \"  Manajemen Informatika  \"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -66,14 +77,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members",
+							"raw": "http://localhost:8080/majors",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members"
+								"majors"
 							]
 						},
 						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
@@ -101,7 +112,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"fsdf\",\n    \"address\": \"fdsf\",\n    \"phoneNumber\": \"\"\n}",
+							"raw": "{\n    \"name\": \"fsdf\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -109,14 +120,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members/1",
+							"raw": "http://localhost:8080/majors/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
+								"majors",
 								"1"
 							]
 						},
@@ -153,15 +164,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members/2",
+							"raw": "http://localhost:8080/majors/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
-								"2"
+								"majors",
+								"1"
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
@@ -177,7 +188,18 @@
 					"name": "Get",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/courses",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"courses"
+							]
+						}
 					},
 					"response": []
 				},
@@ -187,15 +209,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/members/2",
+							"raw": "http://localhost:8080/courses/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
-								"2"
+								"courses",
+								"1"
 							]
 						}
 					},
@@ -222,7 +244,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"        dsfsf\",\n    \"address\": \"Maluku\",\n    \"phoneNumber\": \"384374923423\"\n}",
+							"raw": "{\n    \"name\": \"Matematika\",\n    \"credit\": 4\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -230,14 +252,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members",
+							"raw": "http://localhost:8080/courses",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members"
+								"courses"
 							]
 						},
 						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
@@ -265,7 +287,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"fsdf\",\n    \"address\": \"fdsf\",\n    \"phoneNumber\": \"\"\n}",
+							"raw": "{\n    \"name\": \"Matematika\",\n    \"credit\": 4,\n    \"active\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -273,15 +295,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members/1",
+							"raw": "http://localhost:8080/courses/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
-								"1"
+								"courses",
+								"2"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -317,14 +339,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members/2",
+							"raw": "http://localhost:8080/courses/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
+								"courses",
 								"2"
 							]
 						},
@@ -341,7 +363,18 @@
 					"name": "Get",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/students",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"students"
+							]
+						}
 					},
 					"response": []
 				},
@@ -351,15 +384,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/members/2",
+							"raw": "http://localhost:8080/students/2012010002",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
-								"2"
+								"students",
+								"2012010002"
 							]
 						}
 					},
@@ -386,7 +419,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"        dsfsf\",\n    \"address\": \"Maluku\",\n    \"phoneNumber\": \"384374923423\"\n}",
+							"raw": "{\n    \"idMajor\" : 3,\n    \"name\" : \"Budi\",\n    \"gender\" : \"Laki-laki\",\n    \"address\" : \"Bandung\",\n    \"phoneNumber\" : \"082231232384\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -394,14 +427,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members",
+							"raw": "http://localhost:8080/students",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members"
+								"students"
 							]
 						},
 						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
@@ -429,7 +462,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"fsdf\",\n    \"address\": \"fdsf\",\n    \"phoneNumber\": \"\"\n}",
+							"raw": "{\n    \"idMajor\" : 1,\n    \"name\" : \"Budi\",\n    \"gender\" : \"Laki-laki\",\n    \"address\" : \"Bandung\",\n    \"phoneNumber\" : \"082231232384\",\n    \"active\" : false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -437,15 +470,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members/1",
+							"raw": "http://localhost:8080/students/2012010002",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
-								"1"
+								"students",
+								"2012010002"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -481,15 +514,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members/2",
+							"raw": "http://localhost:8080/students/2012010001",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
-								"2"
+								"students",
+								"2012010001"
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
@@ -505,7 +538,18 @@
 					"name": "Get",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/grades",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"grades"
+							]
+						}
 					},
 					"response": []
 				},
@@ -515,14 +559,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/members/2",
+							"raw": "http://localhost:8080/grades/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
+								"grades",
 								"2"
 							]
 						}
@@ -550,7 +594,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"        dsfsf\",\n    \"address\": \"Maluku\",\n    \"phoneNumber\": \"384374923423\"\n}",
+							"raw": "{\n    \"npm\": \"2012010002\",\n    \"idCourse\": 5\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -558,14 +602,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members",
+							"raw": "http://localhost:8080/grades",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members"
+								"grades"
 							]
 						},
 						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
@@ -593,7 +637,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"fsdf\",\n    \"address\": \"fdsf\",\n    \"phoneNumber\": \"\"\n}",
+							"raw": "{\n        \"npm\": \"2012010002\",\n        \"idCourse\": 2,\n        \"quiz1\": 100,\n        \"quiz2\": -2,\n        \"quiz3\": -1,\n        \"quiz4\": -1,\n        \"quiz5\": -1,\n        \"exam1\": -1,\n        \"exam2\": -1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -601,15 +645,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members/1",
+							"raw": "http://localhost:8080/grades/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
-								"1"
+								"grades",
+								"4"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -645,14 +689,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/members/2",
+							"raw": "http://localhost:8080/grades/2",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"members",
+								"grades",
 								"2"
 							]
 						},
