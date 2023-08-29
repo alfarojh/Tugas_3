@@ -3,14 +3,14 @@ package com.example.Tugas3.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Student {
-    private final String npm;
-    private String name;
-    private byte idMajor;
-    private String gender;
-    private String address;
-    private String phoneNumber;
-    private boolean isActive;
-    private boolean isDeleted;
+    private final String npm;   // NPM Mahasiswa
+    private String name;        // Nama Mahasiswa
+    private byte idMajor;       // Jurusan yang diambil Mahasiswa
+    private String gender;      // Jenis kelamin Mahasiswa
+    private String address;     // Alamat Mahasiswa
+    private String phoneNumber; // Nomor Telepon Mahasiswa
+    private boolean isActive;   // Status aktif Mahasiswa
+    private boolean isDeleted;  // Status penghapusan Mahasiswa
 
     public Student(String npm, byte idMajor, String name, String gender, String address, String phoneNumber) {
         this.npm = npm;
@@ -24,11 +24,11 @@ public class Student {
     }
 
     public String getNpm() {
-        return npm;
+        return npm.trim();
     }
 
     public String getName() {
-        return name;
+        return name.trim();
     }
 
     public void setName(String name) {
@@ -44,7 +44,7 @@ public class Student {
     }
 
     public String getGender() {
-        return gender;
+        return gender.trim();
     }
 
     public void setGender(String gender) {
@@ -52,7 +52,7 @@ public class Student {
     }
 
     public String getAddress() {
-        return address;
+        return address.trim();
     }
 
     public void setAddress(String address) {
@@ -60,7 +60,7 @@ public class Student {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return phoneNumber.trim();
     }
 
     public void setPhoneNumber(String phoneNumber) {
@@ -74,7 +74,6 @@ public class Student {
     public void setActive(boolean active) {
         isActive = active;
     }
-
 
     @JsonIgnore
     public boolean isExist() {

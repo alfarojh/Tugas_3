@@ -3,11 +3,11 @@ package com.example.Tugas3.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Course {
-    private final byte id;
-    private String name;
-    private byte credit;
-    private boolean isActive;
-    private boolean isDeleted;
+    private final byte id;      // ID Mata Kuliah
+    private String name;        // Nama Mata Kuliah
+    private byte credit;        // Jumlah SKS
+    private boolean isActive;   // Status aktif Mata Kuliah
+    private boolean isDeleted;  // Status penghapusan Mata Kuliah
 
     public Course(byte id, String name, byte credit) {
         this.id = id;
@@ -22,7 +22,7 @@ public class Course {
     }
 
     public String getName() {
-        return name;
+        return name.trim();
     }
 
     public void setName(String name) {

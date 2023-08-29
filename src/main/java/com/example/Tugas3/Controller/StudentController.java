@@ -35,12 +35,7 @@ public class StudentController {
 
     @PostMapping("")
     public ResponseEntity addStudent(@RequestBody Student student) {
-        if (studentService.add(
-                student.getName(),
-                student.getIdMajor(),
-                student.getGender(),
-                student.getAddress(),
-                student.getPhoneNumber())) {
+        if (studentService.add(student)) {
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse(
                             studentService.getMessage(),
@@ -54,14 +49,7 @@ public class StudentController {
 
     @PutMapping("/{npm}")
     public ResponseEntity updateStudent(@PathVariable String npm, @RequestBody Student student) {
-        if (studentService.update(
-                npm,
-                student.getIdMajor(),
-                student.getName(),
-                student.getGender(),
-                student.getAddress(),
-                student.getPhoneNumber(),
-                student.isActive())) {
+        if (studentService.update(npm, student)) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse(
                             studentService.getMessage(),

@@ -40,12 +40,12 @@ public class StudentCourseService {
 
     //============================================== CRUD =================================================
 
-    public boolean add(String npm, byte idCourse) {
-        if (inputValidation.isNpmValid(npm) &&
-                inputValidation.isIdCourseValid(idCourse) &&
-                isNpmExist(npm) && isIDCourseExist(idCourse) &&
-                isCourseNotAlreadyTakenByNpm(getNewId(), npm, idCourse)) {
-            studentCourses.add(new StudentCourse(getNewId(), npm, idCourse));
+    public boolean add(StudentCourse studentCourse) {
+        if (inputValidation.isNpmValid(studentCourse.getNpm()) &&
+                inputValidation.isIdCourseValid(studentCourse.getIdCourse()) &&
+                isNpmExist(studentCourse.getNpm()) && isIDCourseExist(studentCourse.getIdCourse()) &&
+                isCourseNotAlreadyTakenByNpm(getNewId(), studentCourse.getNpm().trim(), studentCourse.getIdCourse())) {
+            studentCourses.add(new StudentCourse(getNewId(), studentCourse.getNpm(), studentCourse.getIdCourse()));
             message = "StudentCourse added successfully.";
             return true;
         }
@@ -53,34 +53,32 @@ public class StudentCourseService {
         return false;
     }
 
-    public boolean update(int id, String npm, byte idCourse,
-                               byte quiz1, byte quiz2, byte quiz3, byte quiz4, byte quiz5,
-                               byte exam1, byte exam2) {
+    public boolean update(int id, StudentCourse studentCourse) {
+        message = inputValidation.getMessage();
         if (inputValidation.isIdStudentCourseValid(id) && isIdExist(id) &&
-                inputValidation.isNpmValid(npm) &&
-                inputValidation.isIdCourseValid(idCourse) &&
-                isNpmExist(npm) && isIDCourseExist(idCourse) &&
-                isCourseNotAlreadyTakenByNpm(id, npm, idCourse) &&
-                inputValidation.isGradeValid(quiz1, "quiz1") &&
-                inputValidation.isGradeValid(quiz2, "quiz2") &&
-                inputValidation.isGradeValid(quiz3, "quiz3") &&
-                inputValidation.isGradeValid(quiz4, "quiz4") &&
-                inputValidation.isGradeValid(quiz5, "quiz5") &&
-                inputValidation.isGradeValid(exam1, "exam1") &&
-                inputValidation.isGradeValid(exam2, "exam2")) {
-            studentCourses.get(getIndexById(id)).setNpm(npm);
-            studentCourses.get(getIndexById(id)).setIdCourse(idCourse);
-            studentCourses.get(getIndexById(id)).setQuiz1(quiz1);
-            studentCourses.get(getIndexById(id)).setQuiz2(quiz2);
-            studentCourses.get(getIndexById(id)).setQuiz3(quiz3);
-            studentCourses.get(getIndexById(id)).setQuiz4(quiz4);
-            studentCourses.get(getIndexById(id)).setQuiz5(quiz5);
-            studentCourses.get(getIndexById(id)).setExam1(exam1);
-            studentCourses.get(getIndexById(id)).setExam2(exam2);
+                inputValidation.isNpmValid(studentCourse.getNpm()) &&
+                inputValidation.isIdCourseValid(studentCourse.getIdCourse()) &&
+                isNpmExist(studentCourse.getNpm()) && isIDCourseExist(studentCourse.getIdCourse()) &&
+                isCourseNotAlreadyTakenByNpm(id, studentCourse.getNpm(), studentCourse.getIdCourse()) &&
+                inputValidation.isGradeValid(studentCourse.getQuiz1(), "quiz1") &&
+                inputValidation.isGradeValid(studentCourse.getQuiz2(), "quiz2") &&
+                inputValidation.isGradeValid(studentCourse.getQuiz3(), "quiz3") &&
+                inputValidation.isGradeValid(studentCourse.getQuiz4(), "quiz4") &&
+                inputValidation.isGradeValid(studentCourse.getQuiz5(), "quiz5") &&
+                inputValidation.isGradeValid(studentCourse.getExam1(), "exam1") &&
+                inputValidation.isGradeValid(studentCourse.getExam2(), "exam2")) {
+            studentCourses.get(getIndexById(id)).setNpm(studentCourse.getNpm());
+            studentCourses.get(getIndexById(id)).setIdCourse(studentCourse.getIdCourse());
+            studentCourses.get(getIndexById(id)).setQuiz1(studentCourse.getQuiz1());
+            studentCourses.get(getIndexById(id)).setQuiz2(studentCourse.getQuiz2());
+            studentCourses.get(getIndexById(id)).setQuiz3(studentCourse.getQuiz3());
+            studentCourses.get(getIndexById(id)).setQuiz4(studentCourse.getQuiz4());
+            studentCourses.get(getIndexById(id)).setQuiz5(studentCourse.getQuiz5());
+            studentCourses.get(getIndexById(id)).setExam1(studentCourse.getExam1());
+            studentCourses.get(getIndexById(id)).setExam2(studentCourse.getExam2());
             message = "StudentCourse with ID `" + id + "` updated successfully.";
             return true;
         }
-        message = inputValidation.getMessage();
         return false;
     }
 

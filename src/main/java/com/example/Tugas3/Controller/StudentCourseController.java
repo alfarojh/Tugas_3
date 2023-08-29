@@ -35,9 +35,7 @@ public class StudentCourseController {
 
     @PostMapping("")
     public ResponseEntity addStudentCourse(@RequestBody StudentCourse studentCourse) {
-        if (studentCourseService.add(
-                studentCourse.getNpm(),
-                studentCourse.getIdCourse())) {
+        if (studentCourseService.add(studentCourse)) {
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse(
                             studentCourseService.getMessage(),
@@ -51,17 +49,7 @@ public class StudentCourseController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateStudentCourse(@PathVariable int id, @RequestBody StudentCourse studentCourse) {
-        if (studentCourseService.update(
-                id,
-                studentCourse.getNpm(),
-                studentCourse.getIdCourse(),
-                studentCourse.getQuiz1(),
-                studentCourse.getQuiz2(),
-                studentCourse.getQuiz3(),
-                studentCourse.getQuiz4(),
-                studentCourse.getQuiz5(),
-                studentCourse.getExam1(),
-                studentCourse.getExam2())) {
+        if (studentCourseService.update(id, studentCourse)) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse(
                             studentCourseService.getMessage(),

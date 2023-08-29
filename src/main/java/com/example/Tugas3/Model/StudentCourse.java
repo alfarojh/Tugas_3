@@ -3,23 +3,23 @@ package com.example.Tugas3.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class StudentCourse {
-    private final int id;
-    private String npm;
-    private byte idCourse;
-    private byte quiz1;
-    private byte quiz2;
-    private byte quiz3;
-    private byte quiz4;
-    private byte quiz5;
-    private byte exam1;
-    private byte exam2;
+    private final int id;   // ID Relasi antara Mahasiswa dan Mata Kuliah
+    private String npm;     // NPM Mahasiswa
+    private byte idCourse;  // ID Mata Kuliah
+    private byte quiz1;     // Nilai kuis 1
+    private byte quiz2;     // Nilai kuis 2
+    private byte quiz3;     // Nilai kuis 3
+    private byte quiz4;     // Nilai kuis 4
+    private byte quiz5;     // Nilai kuis 5
+    private byte exam1;     // Nilai Ujian Tengah Semester
+    private byte exam2;     // Nilai Ujian Akhir Semester
     private boolean isDeleted;
 
     public StudentCourse(int id, String npm, byte idCourse) {
         this.id = id;
         this.npm = npm;
         this.idCourse = idCourse;
-        this.quiz1 = -1;
+        this.quiz1 = -1;    // Nilai default -1 -> untuk menandakan bahwa nilai belum ada.
         this.quiz2 = -1;
         this.quiz3 = -1;
         this.quiz4 = -1;
@@ -34,11 +34,11 @@ public class StudentCourse {
     }
 
     public String getNpm() {
-        return npm;
+        return npm.trim();
     }
 
     public void setNpm(String npm) {
-        this.npm = npm;
+        this.npm = npm.trim();
     }
 
     public byte getIdCourse() {

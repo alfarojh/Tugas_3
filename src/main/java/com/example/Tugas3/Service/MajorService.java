@@ -36,9 +36,9 @@ public class MajorService {
 
     //============================================== CRUD =================================================
 
-    public boolean add(String name) {
-        if (inputValidation.isNameValid(name)) {
-            majors.add(new Major(getNewIndex(), name.trim()));
+    public boolean add(Major major) {
+        if (inputValidation.isNameValid(major.getName())) {
+            majors.add(new Major(getNewIndex(), major.getName().trim()));
             message = "Major added successfully.";
             return true;
         }
@@ -46,11 +46,11 @@ public class MajorService {
         return false;
     }
 
-    public boolean update(byte id, String name) {
+    public boolean update(byte id, Major major) {
         if (inputValidation.isIdMajorValid(id) &&
-                inputValidation.isNameValid(name) &&
+                inputValidation.isNameValid(major.getName()) &&
                 isIdExist(id)) {
-            majors.get(getIndexById(id)).setName(name);
+            majors.get(getIndexById(id)).setName(major.getName());
             message = "Major with ID `" + id + "` updated successfully.";
             return true;
         }

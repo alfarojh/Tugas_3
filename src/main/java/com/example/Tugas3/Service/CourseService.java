@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
-    private InputValidation inputValidation = new InputValidation();
     @Autowired
     private MajorService majorService;
+    private InputValidation inputValidation = new InputValidation();
     private List<Course> courses = new ArrayList<>();
     private String message;
 
@@ -38,10 +38,10 @@ public class CourseService {
 
     //============================================== CRUD =================================================
 
-    public boolean add(String name, byte credit) {
-        if (inputValidation.isNameValid(name) &&
-                inputValidation.isCreditValid(credit)) {
-            courses.add(new Course(getNewId(), name, credit));
+    public boolean add(Course course) {
+        if (inputValidation.isNameValid(course.getName()) &&
+                inputValidation.isCreditValid(course.getCredit())) {
+            courses.add(new Course(getNewId(), course.getName(), course.getCredit()));
             message = "Course added successfully.";
             return true;
         }
@@ -49,14 +49,14 @@ public class CourseService {
         return false;
     }
 
-    public boolean update(byte id, String name, byte credit, boolean status) {
+    public boolean update(byte id, Course course) {
         if (inputValidation.isIdCourseValid(id) &&
-                inputValidation.isNameValid(name) &&
-                inputValidation.isCreditValid(credit) &&
+                inputValidation.isNameValid(course.getName()) &&
+                inputValidation.isCreditValid(course.getCredit()) &&
                 isIdExist(id)) {
-            courses.get(getIndexById(id)).setName(name);
-            courses.get(getIndexById(id)).setCredit(credit);
-            courses.get(getIndexById(id)).setActive(status);
+            courses.get(getIndexById(id)).setName(course.getName());
+            courses.get(getIndexById(id)).setCredit(course.getCredit());
+            courses.get(getIndexById(id)).setActive(course.isActive());
             message = "Course with ID `" + id + "` updated successfully.";
             return true;
         }

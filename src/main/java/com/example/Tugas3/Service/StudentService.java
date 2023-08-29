@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-    private InputValidation inputValidation = new InputValidation();
-    private List<Student> students = new ArrayList<>();
     @Autowired
     private MajorService majorService;
+    private InputValidation inputValidation = new InputValidation();
+    private List<Student> students = new ArrayList<>();
     private String message;
 
     public StudentService() {
@@ -42,13 +42,19 @@ public class StudentService {
 
     //============================================== CRUD =================================================
 
-    public boolean add(String name, byte idMajor, String gender, String address, String phoneNumber) {
-        if (inputValidation.isNameValid(name) &&
-                isIDMajorExist(idMajor) &&
-                inputValidation.isGenderValid(gender) &&
-                inputValidation.isAddressValid(address) &&
-                inputValidation.isPhoneNumberValid(phoneNumber)) {
-            students.add(new Student(getNewNPM(idMajor), idMajor, name, gender, address, phoneNumber));
+    public boolean add(Student student) {
+        if (inputValidation.isNameValid(student.getName()) &&
+                isIDMajorExist(student.getIdMajor()) &&
+                inputValidation.isGenderValid(student.getGender()) &&
+                inputValidation.isAddressValid(student.getAddress()) &&
+                inputValidation.isPhoneNumberValid(student.getPhoneNumber())) {
+            students.add(new Student(getNewNPM(
+                    student.getIdMajor()),
+                    student.getIdMajor(),
+                    student.getName(),
+                    student.getGender(),
+                    student.getAddress(),
+                    student.getPhoneNumber()));
             message = "Student added successfully.";
             return true;
         }
@@ -56,19 +62,19 @@ public class StudentService {
         return false;
     }
 
-    public boolean update(String npm, byte idMajor, String name, String gender, String address, String phoneNumber, boolean status) {
+    public boolean update(String npm, Student student) {
         if (inputValidation.isNpmValid(npm) &&
-                inputValidation.isNameValid(name) &&
-                inputValidation.isGenderValid(gender) &&
-                inputValidation.isAddressValid(address) &&
-                inputValidation.isPhoneNumberValid(phoneNumber) &&
+                inputValidation.isNameValid(student.getName()) &&
+                inputValidation.isGenderValid(student.getGender()) &&
+                inputValidation.isAddressValid(student.getAddress()) &&
+                inputValidation.isPhoneNumberValid(student.getPhoneNumber()) &&
                 isNpmExist(npm)) {
-            students.get(getIndexByNpm(npm)).setName(name);
-            students.get(getIndexByNpm(npm)).setIdMajor(idMajor);
-            students.get(getIndexByNpm(npm)).setGender(gender);
-            students.get(getIndexByNpm(npm)).setAddress(address);
-            students.get(getIndexByNpm(npm)).setPhoneNumber(phoneNumber);
-            students.get(getIndexByNpm(npm)).setActive(status);
+            students.get(getIndexByNpm(npm)).setName(student.getName());
+            students.get(getIndexByNpm(npm)).setIdMajor(student.getIdMajor());
+            students.get(getIndexByNpm(npm)).setGender(student.getGender());
+            students.get(getIndexByNpm(npm)).setAddress(student.getAddress());
+            students.get(getIndexByNpm(npm)).setPhoneNumber(student.getPhoneNumber());
+            students.get(getIndexByNpm(npm)).setActive(student.isActive());
             message = "Student with NPM `" + npm + "` updated successfully.";
             return true;
         }

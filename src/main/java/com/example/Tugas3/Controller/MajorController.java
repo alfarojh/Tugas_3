@@ -35,7 +35,7 @@ public class MajorController {
 
     @PostMapping("")
     public ResponseEntity addMajor(@RequestBody Major major) {
-        if (majorService.add(major.getName())) {
+        if (majorService.add(major)) {
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse(
                             majorService.getMessage(),
@@ -49,7 +49,7 @@ public class MajorController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateMajor(@PathVariable byte id, @RequestBody Major major) {
-        if (majorService.update(id, major.getName())) {
+        if (majorService.update(id, major)) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse(
                             majorService.getMessage(),
