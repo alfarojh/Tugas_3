@@ -1,7 +1,7 @@
-package com.example.Tugas3.Service;
+package com.example.Tugas3.service;
 
-import com.example.Tugas3.Model.Course;
-import com.example.Tugas3.Validation.InputValidation;
+import com.example.Tugas3.model.Course;
+import com.example.Tugas3.validation.InputValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +14,14 @@ public class CourseService {
     @Autowired
     private MajorService majorService;
     private InputValidation inputValidation = new InputValidation();
-    private List<Course> courses = new ArrayList<>();   // Daftar objek Mata Kuliah.
-    private String message;                             // Tempat penampungan pesan.
+    private static final List<Course> courses = new ArrayList<>();   // Daftar objek Mata Kuliah.
 
     public CourseService() {
         seed();
     }
 
     public String getMessage() {
-        return message;
+        return inputValidation.getMessage();
     }
 
     /**
@@ -31,11 +30,8 @@ public class CourseService {
      * @param id    ID Mata Kuliah.
      * @return      True jika ID Mata Kuliah ada, false jika sebaliknya.
      */
-    public boolean isIdExist(byte id) {
-        if (getIndexById(id) < 0) {
-            message = inputValidation.getMessage();
-            return false;
-        } else return true;
+    public boolean isIdExist(long id) {
+        return getIndexById(id) >= 0;
     }
 
     /**
@@ -43,10 +39,18 @@ public class CourseService {
      *
      * @return      Jumlah objek Mata Kuliah dalam daftar.
      */
-    public byte getCoursesSize() {
-        return (byte) courses.size();
+    public int getCoursesSize() {
+        return courses.size();
     }
 
+    /**
+     * Mengembalikan jumlah SKS Mata Kuliah dari dalam daftar.
+     *
+     * @return      Jumlah SKS Mata Kuliah.
+     */
+    public int getCreditById(long id) {
+        return courses.get(getIndexById(id)).getCredit();
+    }
     //============================================== CRUD =================================================
 
     /**
@@ -59,10 +63,9 @@ public class CourseService {
         if (inputValidation.isNameValid(course.getName()) &&
                 inputValidation.isCreditValid(course.getCredit())) {
             courses.add(new Course(getNewId(), course.getName(), course.getCredit()));
-            message = "Course added successfully.";
+            inputValidation.setMessage("Course added successfully.");
             return true;
         }
-        message = inputValidation.getMessage();
         return false;
     }
 
@@ -73,18 +76,29 @@ public class CourseService {
      * @param course    Objek Mata Kuliah yang ingin diperbarui.
      * @return          True jika objek berhasil diperbarui, dan false jika gagal.
      */
-    public boolean update(byte id, Course course) {
+    public boolean update(long id, Course course) {
         if (inputValidation.isIdCourseValid(id) &&
                 inputValidation.isNameValid(course.getName()) &&
                 inputValidation.isCreditValid(course.getCredit()) &&
                 isIdExist(id)) {
             courses.get(getIndexById(id)).setName(course.getName());
             courses.get(getIndexById(id)).setCredit(course.getCredit());
-            courses.get(getIndexById(id)).setActive(course.isActive());
-            message = "Course with ID `" + id + "` updated successfully.";
+            inputValidation.setMessage("Course with ID `" + id + "` updated successfully.");
             return true;
         }
-        message = inputValidation.getMessage();
+        return false;
+    }
+
+    public boolean updateActive(long id, Course course) {
+        if (inputValidation.isIdCourseValid(id) && isIdExist(id)) {
+            courses.get(getIndexById(id)).setActive(course.isActive());
+            if (course.isActive()) {
+                inputValidation.setMessage("Course ID `" + id + "` is now active.");
+            } else {
+                inputValidation.setMessage("Course ID `" + id + "` is now inactive.");
+            }
+            return true;
+        }
         return false;
     }
 
@@ -94,13 +108,12 @@ public class CourseService {
      * @param id    ID Mata Kuliah yang akan dihapus.
      * @return      True jika objek berhasil dihapus, dan false jika gagal.
      */
-    public boolean delete(byte id) {
+    public boolean delete(long id) {
         if (inputValidation.isIdCourseValid(id) && isIdExist(id)) {
             courses.get(getIndexById(id)).delete();
-            message = "Course with ID `" + id + "` deleted successfully.";
+            inputValidation.setMessage("Course with ID `" + id + "` deleted successfully.");
             return true;
         }
-        message = inputValidation.getMessage();
         return false;
     }
 
@@ -121,12 +134,11 @@ public class CourseService {
      * @param id    ID Mata Kuliah.
      * @return      Mata Kuliah yang masih tersedia.
      */
-    public Course getCourseById(byte id) {
+    public Course getCourseById(long id) {
         if (inputValidation.isIdMajorValid(id) && isIdExist(id)) {
-            message = "Course ID Found.";
+            inputValidation.setMessage("Course ID Found.");
             return courses.get(getIndexById(id));
         }
-        message = inputValidation.getMessage();
         return null;
     }
 
@@ -137,8 +149,8 @@ public class CourseService {
      *
      * @return      ID Mata Kuliah baru.
      */
-    private byte getNewId() {
-        return (byte) (courses.size() + 1);
+    private long getNewId() {
+        return courses.size() + 1;
     }
 
     /**
@@ -146,13 +158,11 @@ public class CourseService {
      *
      * @return      Indeks daftar jika ID Mata Kuliah ditemukan, -1 jika tidak ditemukan.
      */
-    private int getIndexById(byte id) {
-        if (id > 0 && id <= courses.size()) {
-            if (courses.get(id-1).isExist()) return id - 1;
-            else inputValidation.setMessage("Course id has been deleted.");
-        } else {
-            inputValidation.setMessage("Course id not found.");
+    private int getIndexById(long id) {
+        if (id > 0 && id <= courses.size() && courses.get((int) (id-1)).isExist()) {
+            return (int) (id - 1);
         }
+        inputValidation.setMessage("Course id not found.");
         return -1;
     }
 

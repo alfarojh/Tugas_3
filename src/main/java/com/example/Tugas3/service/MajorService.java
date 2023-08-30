@@ -1,7 +1,7 @@
-package com.example.Tugas3.Service;
+package com.example.Tugas3.service;
 
-import com.example.Tugas3.Model.Major;
-import com.example.Tugas3.Validation.InputValidation;
+import com.example.Tugas3.model.Major;
+import com.example.Tugas3.validation.InputValidation;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,15 +11,14 @@ import java.util.stream.Collectors;
 @Service
 public class MajorService {
     private InputValidation inputValidation = new InputValidation();
-    private List<Major> majors = new ArrayList<>(); // Daftar objek Jurusan
-    private String message;                         // Tempat penampungan pesan.
+    private static final List<Major> majors = new ArrayList<>(); // Daftar objek Jurusan
 
     public MajorService() {
         seed();
     }
 
     public String getMessage() {
-        return message;
+        return inputValidation.getMessage();
     }
 
     /**
@@ -28,12 +27,8 @@ public class MajorService {
      * @param id    ID Jurusan.
      * @return      True jika ID Jurusan ada, false jika sebaliknya.
      */
-    public boolean isIdExist(byte id) {
-        if (getIndexById(id) < 0) {
-            message = inputValidation.getMessage();
-            return false;
-        }
-        return true;
+    public boolean isIdExist(long id) {
+        return getIndexById(id) >= 0;
     }
 
     /**
@@ -41,8 +36,8 @@ public class MajorService {
      *
      * @return      Jumlah objek Jurusan dalam daftar.
      */
-    public byte getMajorsSize() {
-        return (byte) majors.size();
+    public int getMajorsSize() {
+        return majors.size();
     }
 
     //============================================== CRUD =================================================
@@ -55,11 +50,10 @@ public class MajorService {
      */
     public boolean add(Major major) {
         if (inputValidation.isNameValid(major.getName())) {
-            majors.add(new Major(getNewID(), major.getName().trim()));
-            message = "Major added successfully.";
+            majors.add(new Major(getNewID(), major.getName()));
+            inputValidation.setMessage("Major added successfully.");
             return true;
         }
-        message = inputValidation.getMessage();
         return false;
     }
 
@@ -70,15 +64,14 @@ public class MajorService {
      * @param major Objek jurusan yang ingin diperbarui.
      * @return      True jika objek berhasil diperbarui, dan false jika gagal.
      */
-    public boolean update(byte id, Major major) {
+    public boolean update(long id, Major major) {
         if (inputValidation.isIdMajorValid(id) &&
                 inputValidation.isNameValid(major.getName()) &&
                 isIdExist(id)) {
             majors.get(getIndexById(id)).setName(major.getName());
-            message = "Major with ID `" + id + "` updated successfully.";
+            inputValidation.setMessage("Major with ID `" + id + "` updated successfully.");
             return true;
         }
-        message = inputValidation.getMessage();
         return false;
     }
 
@@ -88,14 +81,13 @@ public class MajorService {
      * @param id    ID Jurusan yang akan dihapus.
      * @return      True jika objek berhasil dihapus, dan false jika gagal.
      */
-    public boolean delete(byte id) {
+    public boolean delete(long id) {
         if (inputValidation.isIdMajorValid(id) &&
                 isIdExist(id)) {
             majors.get(getIndexById(id)).delete();
-            message = "Major with ID `" + id + "` deleted successfully.";
+            inputValidation.setMessage("Major with ID `" + id + "` deleted successfully.");
             return true;
         }
-        message = inputValidation.getMessage();
         return false;
     }
 
@@ -116,12 +108,11 @@ public class MajorService {
      * @param id    ID Jurusan.
      * @return      Jurusan yang masih tersedia.
      */
-    public Major getMajorById(byte id) {
+    public Major getMajorById(long id) {
         if (inputValidation.isIdMajorValid(id) && isIdExist(id)) {
-            message = "Major ID Found.";
+            inputValidation.setMessage("Major ID Found.");
             return majors.get(getIndexById(id));
         }
-        message = inputValidation.getMessage();
         return null;
     }
 
@@ -132,8 +123,8 @@ public class MajorService {
      *
      * @return      ID Jurusan baru.
      */
-    private byte getNewID() {
-        return (byte) (majors.size() + 1);
+    private long getNewID() {
+        return majors.size() + 1;
     }
 
     /**
@@ -141,14 +132,11 @@ public class MajorService {
      *
      * @return      Indeks daftar jika ID Jurusan ditemukan, -1 jika tidak ditemukan.
      */
-    private int getIndexById(byte id) {
-        if (id > 0 && id <= majors.size()) {
-            if (majors.get(id-1).isExist()) return id - 1;
-            else inputValidation.setMessage("Major id has been deleted.");
-        } else {
-            inputValidation.setMessage("Major id not found.");
+    private int getIndexById(long id) {
+        if (id > 0 && id <= majors.size() && majors.get((int) (id-1)).isExist()) {
+            return (int) (id - 1);
         }
-
+        inputValidation.setMessage("Major id not found.");
         return -1;
     }
 

@@ -1,10 +1,12 @@
-package com.example.Tugas3.Service;
+package com.example.Tugas3.service;
 
-import com.example.Tugas3.Model.Student;
-import com.example.Tugas3.Validation.InputValidation;
+import com.example.Tugas3.model.Student;
+import com.example.Tugas3.validation.InputValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,15 +16,14 @@ public class StudentService {
     @Autowired
     private MajorService majorService;
     private InputValidation inputValidation = new InputValidation();
-    private List<Student> students = new ArrayList<>(); // Daftar objek Mahasiswa.
-    private String message;                             // Tempat penampungan pesan.
+    private static final List<Student> students = new ArrayList<>(); // Daftar objek Mahasiswa.
 
     public StudentService() {
         seed();
     }
 
     public String getMessage() {
-        return message;
+        return inputValidation.getMessage();
     }
 
     /**
@@ -32,10 +33,7 @@ public class StudentService {
      * @return      True jika NPM Mahasiswa ada, false jika sebaliknya.
      */
     public boolean isNpmExist(String npm) {
-        if (getIndexByNpm(npm) < 0) {
-            message = inputValidation.getMessage();
-            return false;
-        } else return true;
+        return getIndexByNpm(npm) >= 0;
     }
 
     /**
@@ -73,23 +71,25 @@ public class StudentService {
      * @return          True jika objek berhasil ditambahkan, dan false jika gagal.
      */
     public boolean add(Student student) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
+        int year = Integer.parseInt(format.format(new Timestamp(System.currentTimeMillis())));
         if (inputValidation.isIdMajorValid(student.getIdMajor()) &&
                 isIDMajorExist(student.getIdMajor()) &&
                 inputValidation.isNameValid(student.getName()) &&
                 inputValidation.isGenderValid(student.getGender()) &&
                 inputValidation.isAddressValid(student.getAddress()) &&
                 inputValidation.isPhoneNumberValid(student.getPhoneNumber())) {
-            students.add(new Student(getNewNPM(
-                    student.getIdMajor()),
+            students.add(new Student(
+                    getNewNPM(year, student.getIdMajor()),
+                    year,
                     student.getIdMajor(),
                     student.getName(),
                     student.getGender(),
                     student.getAddress(),
                     student.getPhoneNumber()));
-            message = "Student added successfully.";
+            inputValidation.setMessage("Student added successfully.");
             return true;
         }
-        message = inputValidation.getMessage();
         return false;
     }
 
@@ -110,15 +110,25 @@ public class StudentService {
                 inputValidation.isAddressValid(student.getAddress()) &&
                 inputValidation.isPhoneNumberValid(student.getPhoneNumber())) {
             students.get(getIndexByNpm(npm)).setName(student.getName());
-            students.get(getIndexByNpm(npm)).setIdMajor(student.getIdMajor());
             students.get(getIndexByNpm(npm)).setGender(student.getGender());
             students.get(getIndexByNpm(npm)).setAddress(student.getAddress());
             students.get(getIndexByNpm(npm)).setPhoneNumber(student.getPhoneNumber());
-            students.get(getIndexByNpm(npm)).setActive(student.isActive());
-            message = "Student with NPM `" + npm + "` updated successfully.";
+            inputValidation.setMessage("Student with NPM `" + npm + "` updated successfully.");
             return true;
         }
-        message = inputValidation.getMessage();
+        return false;
+    }
+
+    public boolean updateActivated(String npm, Student student) {
+        if (inputValidation.isNpmValid(npm) && isNpmExist(npm)) {
+            students.get(getIndexByNpm(npm)).setActive(student.isActive());
+            if (student.isActive()) {
+                inputValidation.setMessage("Student NPM `" + npm + "` is now active.");
+            } else {
+                inputValidation.setMessage("Student NPM `" + npm + "` is now inactive.");
+            }
+            return true;
+        }
         return false;
     }
 
@@ -131,10 +141,9 @@ public class StudentService {
     public boolean delete(String npm) {
         if (inputValidation.isNpmValid(npm) && isNpmExist(npm)) {
             students.get(getIndexByNpm(npm)).delete();
-            message = "Student with NPM `" + npm + "` deleted successfully.";
+            inputValidation.setMessage("Student with NPM `" + npm + "` deleted successfully.");
             return true;
         }
-        message = inputValidation.getMessage();
         return false;
     }
 
@@ -157,10 +166,9 @@ public class StudentService {
      */
     public Student getStudentByNpm(String npm) {
         if (inputValidation.isNpmValid(npm) && isNpmExist(npm)) {
-            message = "Student NPM Found.";
+            inputValidation.setMessage("Student NPM Found.");
             return students.get(getIndexByNpm(npm));
         }
-        message = inputValidation.getMessage();
         return null;
     }
 
@@ -171,15 +179,14 @@ public class StudentService {
      *
      * @return      NPM Mahasiswa baru.
      */
-    private String getNewNPM(byte idMajor) {
-        String year = "2012";
+    private String getNewNPM(int year, long idMajor) {
         int count = 1;
         for (int indexStudent = students.size() - 1; indexStudent >= 0 ; indexStudent--) {
             if (students.get(indexStudent).getNpm().substring(0, 6).equals(year + String.format("%02d", idMajor))) {
                 count = Integer.parseInt(students.get(indexStudent).getNpm().substring(6, 10)) + 1;
             }
         }
-        return year + String.format("%02d", idMajor) + String.format("%04d", count);
+        return String.format("%d%02d%04d", year, idMajor, count);
     }
 
     /**
@@ -192,10 +199,6 @@ public class StudentService {
             if (students.get(indexStudent).getNpm().equals(npm) &&
                     students.get(indexStudent).isExist()) {
                 return indexStudent;
-            } else if (students.get(indexStudent).getNpm().equals(npm) &&
-                    !students.get(indexStudent).isExist()) {
-                inputValidation.setMessage("NPM has been deleted.");
-                return -1;
             }
         }
         inputValidation.setMessage("NPM not found.");
@@ -208,7 +211,7 @@ public class StudentService {
      * @param idMajor   ID Jurusan.
      * @return          True jika ID Jurusan ada, false jika sebaliknya.
      */
-    private boolean isIDMajorExist(byte idMajor) {
+    private boolean isIDMajorExist(long idMajor) {
         boolean isExist = majorService.isIdExist(idMajor);
         inputValidation.setMessage(majorService.getMessage());
         return isExist;
@@ -216,16 +219,19 @@ public class StudentService {
 
     // Membuat daftar objek Mahasiswa baru secara default.
     private void seed() {
-        byte idMajor = (byte) 1;
+        long idMajor = 1;
+        int year = 2012;
         students.add(new Student(
-                getNewNPM(idMajor),
+                getNewNPM(year, idMajor),
+                year,
                 idMajor,
                 "Budi",
                 "Laki-laki",
                 "Bandung",
                 "08231238438"));
         students.add(new Student(
-                getNewNPM(idMajor),
+                getNewNPM(year, idMajor),
+                year,
                 idMajor,
                 "Santi",
                 "Perempuan",

@@ -1,15 +1,14 @@
-package com.example.Tugas3.Validation;
+package com.example.Tugas3.validation;
 
 public class InputValidation {
     private final ValueValidation valueValidation = new ValueValidation();
-    private String message;
 
     public String getMessage() {
-        return message;
+        return valueValidation.getMessage();
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.valueValidation.setMessage(message);
     }
 
     /**
@@ -21,10 +20,8 @@ public class InputValidation {
      * @return      True jika semua kriteria terpenuhi, dan false jika sebaliknya.
      */
     public boolean isNameValid(String name) {
-        boolean isValid = valueValidation.isNotNullOrEmpty(name, "name") &&
+        return valueValidation.isNotNullOrEmpty(name, "name") &&
                 valueValidation.isNotSymbol(name, "name");
-        message = valueValidation.getMessage();
-        return isValid;
     }
 
     /**
@@ -35,9 +32,7 @@ public class InputValidation {
      * @return          True jika semua kriteria terpenuhi, dan false jika sebaliknya.
      */
     public boolean isAddressValid(String address) {
-        boolean isValid = valueValidation.isNotNullOrEmpty(address, "address");
-        message = valueValidation.getMessage();
-        return isValid;
+        return valueValidation.isNotNullOrEmpty(address, "address");
     }
 
     /**
@@ -48,9 +43,7 @@ public class InputValidation {
      * @return          True jika semua kriteria terpenuhi, dan false jika sebaliknya.
      */
     public boolean isGenderValid(String gender) {
-        boolean isValid = valueValidation.isNotNullOrEmpty(gender, "gender");
-        message = valueValidation.getMessage();
-        return isValid;
+        return valueValidation.isNotNullOrEmpty(gender, "gender");
     }
 
     /**
@@ -63,11 +56,9 @@ public class InputValidation {
      * @return              True jika semua kriteria terpenuhi, dan false jika sebaliknya.
      */
     public boolean isPhoneNumberValid(String phoneNumber) {
-        boolean isValid = valueValidation.isNotNullOrEmpty(phoneNumber, "phoneNumber") &&
+        return valueValidation.isNotNullOrEmpty(phoneNumber, "phoneNumber") &&
                 valueValidation.isDigit(phoneNumber, "phoneNumber") &&
                 valueValidation.isLengthValid(phoneNumber, "phoneNumber", 10, 13);
-        message = valueValidation.getMessage();
-        return isValid;
     }
 
     /**
@@ -79,10 +70,8 @@ public class InputValidation {
      * @return          True jika semua kriteria terpenuhi, dan false jika sebaliknya.
      */
     public boolean isCreditValid(byte credit) {
-        boolean isValid = valueValidation.isNotZero(credit, "credit") &&
+        return valueValidation.isNotZero(credit, "credit") &&
                 valueValidation.isPositive(credit, "credit");
-        message = valueValidation.getMessage();
-        return isValid;
     }
 
     /**
@@ -92,10 +81,12 @@ public class InputValidation {
      * @param grade     Nilai ujian yang akan divalidasi.
      * @return          True jika semua kriteria terpenuhi, dan false jika sebaliknya.
      */
-    public boolean isGradeValid(int grade, String varName) {
-        boolean isValid = valueValidation.inRange(grade, varName, -1, 100);
-        message = valueValidation.getMessage();
-        return isValid;
+    public boolean isGradeValid(Byte grade, String varName) {
+        if (grade == null) {
+            return true;
+        } else {
+            return valueValidation.inRange(grade.intValue(), varName, 0, 100);
+        }
     }
 
     /**
@@ -108,11 +99,9 @@ public class InputValidation {
      * @return      True jika semua kriteria terpenuhi, dan false jika sebaliknya.
      */
     public boolean isNpmValid(String npm) {
-        boolean isValid = valueValidation.isNotNullOrEmpty(npm, "npm") &&
+        return valueValidation.isNotNullOrEmpty(npm, "npm") &&
                 valueValidation.isDigit(npm, "npm") &&
                 valueValidation.isLengthValid(npm, "npm", 10);
-        message = valueValidation.getMessage();
-        return isValid;
     }
 
     /**
@@ -123,11 +112,9 @@ public class InputValidation {
      * @param idMajor   ID Jurusan yang akan divalidasi.
      * @return          True jika semua kriteria terpenuhi, dan false jika sebaliknya.
      */
-    public boolean isIdMajorValid(byte idMajor) {
-        boolean isValid = valueValidation.isNotZero(idMajor, "idMajor") &&
+    public boolean isIdMajorValid(long idMajor) {
+        return valueValidation.isNotZero(idMajor, "idMajor") &&
                 valueValidation.isPositive(idMajor, "idMajor");
-        message = valueValidation.getMessage();
-        return isValid;
     }
 
     /**
@@ -138,11 +125,9 @@ public class InputValidation {
      * @param idCourse  ID Mata Kuliah yang akan divalidasi.
      * @return          True jika semua kriteria terpenuhi, dan false jika sebaliknya.
      */
-    public boolean isIdCourseValid(byte idCourse) {
-        boolean isValid = valueValidation.isNotZero(idCourse, "idCourse") &&
+    public boolean isIdCourseValid(long idCourse) {
+        return valueValidation.isNotZero(idCourse, "idCourse") &&
                 valueValidation.isPositive(idCourse, "idCourse");
-        message = valueValidation.getMessage();
-        return isValid;
     }
 
     /**
@@ -154,9 +139,7 @@ public class InputValidation {
      * @return          True jika semua kriteria terpenuhi, dan false jika sebaliknya.
      */
     public boolean isIdStudentCourseValid(int idGrade) {
-        boolean isValid = valueValidation.isNotZero(idGrade, "idGrade") &&
+        return valueValidation.isNotZero(idGrade, "idGrade") &&
                 valueValidation.isPositive(idGrade, "idGrade");
-        message = valueValidation.getMessage();
-        return isValid;
     }
 }

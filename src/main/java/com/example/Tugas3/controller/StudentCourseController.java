@@ -1,22 +1,33 @@
-package com.example.Tugas3.Controller;
+package com.example.Tugas3.controller;
 
-import com.example.Tugas3.Model.ApiResponse;
-import com.example.Tugas3.Model.StudentCourse;
-import com.example.Tugas3.Service.StudentCourseService;
+import com.example.Tugas3.model.ApiResponse;
+import com.example.Tugas3.model.StudentCourse;
+import com.example.Tugas3.service.StudentCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/grades")
+@RequestMapping("/student-course")
 public class StudentCourseController {
     @Autowired
     private StudentCourseService studentCourseService;
 
     @GetMapping("")
     public ResponseEntity getStudentCourses() {
-        return ResponseEntity.status(HttpStatus.OK).body(studentCourseService.getStudentCourses());
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse(
+                        "All list StudentCourse.",
+                        studentCourseService.getStudentCourses()
+                ));
     }
 
     @GetMapping("/{id}")
@@ -47,9 +58,9 @@ public class StudentCourseController {
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity updateStudentCourse(@PathVariable int id, @RequestBody StudentCourse studentCourse) {
-        if (studentCourseService.update(id, studentCourse)) {
+    @PutMapping("/grade/{id}")
+    public ResponseEntity updateGradeStudentCourse(@PathVariable int id, @RequestBody StudentCourse studentCourse) {
+        if (studentCourseService.updateGrade(id, studentCourse)) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse(
                             studentCourseService.getMessage(),
@@ -61,11 +72,13 @@ public class StudentCourseController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteStudentCourse(@PathVariable int id) {
-        if (studentCourseService.delete(id)) {
+    @PatchMapping("/{id}/activated")
+    public ResponseEntity updateActiveStudentCourse(@PathVariable int id, @RequestBody StudentCourse studentCourse) {
+        if (studentCourseService.updateActive(id, studentCourse)) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ApiResponse(studentCourseService.getMessage()));
+                    .body(new ApiResponse(
+                            studentCourseService.getMessage(),
+                            studentCourseService.getStudentCoursesById(id)));
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse(studentCourseService.getMessage()));

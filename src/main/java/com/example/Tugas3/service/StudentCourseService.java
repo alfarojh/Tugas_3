@@ -1,13 +1,12 @@
-package com.example.Tugas3.Service;
+package com.example.Tugas3.service;
 
-import com.example.Tugas3.Model.StudentCourse;
-import com.example.Tugas3.Validation.InputValidation;
+import com.example.Tugas3.model.StudentCourse;
+import com.example.Tugas3.validation.InputValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentCourseService {
@@ -15,16 +14,15 @@ public class StudentCourseService {
     private StudentService studentService;
     @Autowired
     private CourseService courseService;
-    private List<StudentCourse> studentCourses = new ArrayList<>();
+    private static final List<StudentCourse> studentCourses = new ArrayList<>();
     private InputValidation inputValidation = new InputValidation();
-    private String message;
 
     public StudentCourseService() {
         seed();
     }
 
     public String getMessage() {
-        return message;
+        return inputValidation.getMessage();
     }
 
     /**
@@ -33,10 +31,7 @@ public class StudentCourseService {
      * @return      Jumlah objek Relasi Mahasiswa dan Mata Kuliah dalam daftar.
      */
     public boolean isIdExist(int id) {
-        if (getIndexById(id) < 0) {
-            message = inputValidation.getMessage();
-            return false;
-        } else return true;
+        return getIndexById(id) >= 0;
     }
 
     /**
@@ -60,14 +55,16 @@ public class StudentCourseService {
         if (inputValidation.isNpmValid(studentCourse.getNpm()) &&
                 inputValidation.isIdCourseValid(studentCourse.getIdCourse()) &&
                 isNpmExist(studentCourse.getNpm()) &&
-                isIDCourseExist(studentCourse.getIdCourse()) &&
-                isCourseNotAlreadyTakenByNpm(getNewId(), studentCourse.getNpm(), studentCourse.getIdCourse())) {
+                isIDCourseExist(studentCourse.getIdCourse())) {
 
-            studentCourses.add(new StudentCourse(getNewId(), studentCourse.getNpm(), studentCourse.getIdCourse()));
-            message = "StudentCourse added successfully.";
+            studentCourses.add(new StudentCourse(
+                    getNewId(),
+                    studentCourse.getNpm(),
+                    studentCourse.getIdCourse(),
+                    courseService.getCreditById(studentCourse.getIdCourse())));
+            inputValidation.setMessage("StudentCourse added successfully.");
             return true;
         }
-        message = inputValidation.getMessage();
         return false;
     }
 
@@ -79,14 +76,9 @@ public class StudentCourseService {
      * @param studentCourse Objek Relasi Mahasiswa dan Mata Kuliah yang ingin diperbarui.
      * @return              True jika objek berhasil diperbarui, dan false jika gagal.
      */
-    public boolean update(int id, StudentCourse studentCourse) {
+    public boolean updateGrade(int id, StudentCourse studentCourse) {
         if (inputValidation.isIdStudentCourseValid(id) &&
                 isIdExist(id) &&
-                inputValidation.isNpmValid(studentCourse.getNpm()) &&
-                inputValidation.isIdCourseValid(studentCourse.getIdCourse()) &&
-                isNpmExist(studentCourse.getNpm()) &&
-                isIDCourseExist(studentCourse.getIdCourse()) &&
-                isCourseNotAlreadyTakenByNpm(id, studentCourse.getNpm(), studentCourse.getIdCourse()) &&
                 inputValidation.isGradeValid(studentCourse.getQuiz1(), "quiz1") &&
                 inputValidation.isGradeValid(studentCourse.getQuiz2(), "quiz2") &&
                 inputValidation.isGradeValid(studentCourse.getQuiz3(), "quiz3") &&
@@ -94,9 +86,6 @@ public class StudentCourseService {
                 inputValidation.isGradeValid(studentCourse.getQuiz5(), "quiz5") &&
                 inputValidation.isGradeValid(studentCourse.getExam1(), "exam1") &&
                 inputValidation.isGradeValid(studentCourse.getExam2(), "exam2")) {
-
-            studentCourses.get(getIndexById(id)).setNpm(studentCourse.getNpm());
-            studentCourses.get(getIndexById(id)).setIdCourse(studentCourse.getIdCourse());
             studentCourses.get(getIndexById(id)).setQuiz1(studentCourse.getQuiz1());
             studentCourses.get(getIndexById(id)).setQuiz2(studentCourse.getQuiz2());
             studentCourses.get(getIndexById(id)).setQuiz3(studentCourse.getQuiz3());
@@ -104,11 +93,11 @@ public class StudentCourseService {
             studentCourses.get(getIndexById(id)).setQuiz5(studentCourse.getQuiz5());
             studentCourses.get(getIndexById(id)).setExam1(studentCourse.getExam1());
             studentCourses.get(getIndexById(id)).setExam2(studentCourse.getExam2());
-            message = "StudentCourse with ID `" + id + "` updated successfully.";
+            inputValidation.setMessage("StudentCourse with ID `" + id + "` updated successfully.");
             return true;
+        } else {
+            return false;
         }
-        message = inputValidation.getMessage();
-        return false;
     }
 
     /**
@@ -117,13 +106,16 @@ public class StudentCourseService {
      * @param id    ID Relasi Mahasiswa dan Mata Kuliah yang akan dihapus.
      * @return      True jika objek berhasil dihapus, dan false jika gagal.
      */
-    public boolean delete(int id) {
-        if (inputValidation.isIdStudentCourseValid(id) && isIdExist(id)) {
-            studentCourses.get(getIndexById(id)).delete();
-            message = "StudentCourse with ID `" + id + "` deleted successfully.";
+    public boolean updateActive(int id, StudentCourse studentCourse) {
+        if (inputValidation.isIdStudentCourseValid(id)) {
+            studentCourses.get(getIndexById(id)).setActive(studentCourse.isActive());
+            if (studentCourse.isActive()) {
+                inputValidation.setMessage("StudentCourse ID `" + id + "` is now active.");
+            } else {
+                inputValidation.setMessage("StudentCourse ID `" + id + "` is now inactive.");
+            }
             return true;
         }
-        message = inputValidation.getMessage();
         return false;
     }
 
@@ -133,9 +125,7 @@ public class StudentCourseService {
      * @return      Daftar Relasi Mahasiswa dan Mata Kuliah yang masih tersedia.
      */
     public List<StudentCourse> getStudentCourses() {
-        return studentCourses.stream()
-                .filter(StudentCourse::isExist)
-                .collect(Collectors.toList());
+        return studentCourses;
     }
 
     /**
@@ -147,10 +137,9 @@ public class StudentCourseService {
      */
     public StudentCourse getStudentCoursesById(int id) {
         if (inputValidation.isIdStudentCourseValid(id) && isIdExist(id)) {
-            message = "Student NPM Found.";
+            inputValidation.setMessage("Student NPM Found.");
             return studentCourses.get(getIndexById(id));
         }
-        message = inputValidation.getMessage();
         return null;
     }
 
@@ -161,8 +150,8 @@ public class StudentCourseService {
      *
      * @return      ID Relasi Mahasiswa dan Mata Kuliah baru.
      */
-    private byte getNewId() {
-        return (byte) (studentCourses.size() + 1);
+    private long getNewId() {
+        return studentCourses.size() + 1;
     }
 
     /**
@@ -170,36 +159,12 @@ public class StudentCourseService {
      *
      * @return      Indeks daftar jika ID Relasi Mahasiswa dan Mata Kuliah ditemukan, -1 jika tidak ditemukan.
      */
-    private int getIndexById(int id) {
+    private int getIndexById(long id) {
         if (id > 0 && id <= studentCourses.size()) {
-            if (studentCourses.get(id-1).isExist()) return id - 1;
-            else inputValidation.setMessage("StudentCourse id has been deleted.");
-        } else {
-            inputValidation.setMessage("StudentCourse id not found.");
+            return (int) (id - 1);
         }
+        inputValidation.setMessage("StudentCourse id not found.");
         return -1;
-    }
-
-    /**
-     * Memeriksa apakah Mata Kuliah sudah diambil oleh Mahasiswa sebelumnya.
-     *
-     * @param id        ID Relasi Mahasiswa dan Mata Kuliah.
-     * @param npm       NPM Mahasiswa.
-     * @param idCourse  ID Mata kuliah.
-     * @return          True jika Mahasiswa sudah mengambil Mata Kuliah sebelumnya, dan false jika belum mengambil.
-     */
-    private boolean isCourseNotAlreadyTakenByNpm(int id, String npm, byte idCourse) {
-        for (StudentCourse studentCourse : studentCourses) {
-            if (studentCourse.getId() != id &&
-                    studentCourse.getNpm().equals(npm) &&
-                    studentCourse.getIdCourse() == idCourse) {
-                inputValidation.setMessage("The student with NPM `" + npm + "` " +
-                        "has already taken course with id `" + idCourse + "`." +
-                        "The relationship StudentCourse ID is `" + studentCourse.getId() + "`.");
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -220,7 +185,7 @@ public class StudentCourseService {
      * @param idCourse   ID Jurusan.
      * @return          True jika ID Jurusan ada, false jika sebaliknya.
      */
-    private boolean isIDCourseExist(byte idCourse) {
+    private boolean isIDCourseExist(long idCourse) {
         boolean isExist = courseService.isIdExist(idCourse);
         inputValidation.setMessage(courseService.getMessage());
         return isExist;
@@ -228,9 +193,9 @@ public class StudentCourseService {
 
     // Membuat daftar objek Mahasiswa baru secara default.
     private void seed() {
-        studentCourses.add(new StudentCourse(getNewId(), "2012010001", (byte) 1));
-        studentCourses.add(new StudentCourse(getNewId(), "2012010001", (byte) 2));
-        studentCourses.add(new StudentCourse(getNewId(), "2012010002", (byte) 1));
-        studentCourses.add(new StudentCourse(getNewId(), "2012010002", (byte) 2));
+        studentCourses.add(new StudentCourse(getNewId(), "2012010001", 1, 2));
+        studentCourses.add(new StudentCourse(getNewId(), "2012010001", 2, 4));
+        studentCourses.add(new StudentCourse(getNewId(), "2012010002", 1, 2));
+        studentCourses.add(new StudentCourse(getNewId(), "2012010002", 2, 4));
     }
 }

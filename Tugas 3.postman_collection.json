@@ -34,7 +34,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/majors/01",
+							"raw": "http://localhost:8080/majors/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -42,7 +42,7 @@
 							"port": "8080",
 							"path": [
 								"majors",
-								"01"
+								"1"
 							]
 						}
 					},
@@ -112,7 +112,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"fsdf\"\n}",
+							"raw": "{\n    \"name\": \" Manajemen Bisnis \"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -244,7 +244,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Matematika\",\n    \"credit\": 4\n}",
+							"raw": "{\n    \"name\": \"PBO\",\n    \"credit\": 6\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -267,7 +267,7 @@
 					"response": []
 				},
 				{
-					"name": "Update",
+					"name": "Update Data",
 					"event": [
 						{
 							"listen": "test",
@@ -287,7 +287,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Matematika\",\n    \"credit\": 4,\n    \"active\": true\n}",
+							"raw": "{\n    \"name\": \"PBO\",\n    \"credit\": 8,\n    \"active\": false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -295,7 +295,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/courses/2",
+							"raw": "http://localhost:8080/courses/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -303,7 +303,52 @@
 							"port": "8080",
 							"path": [
 								"courses",
-								"2"
+								"1"
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Activated",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"active\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/courses/activated/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"courses",
+								"activated",
+								"1"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -339,7 +384,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/courses/2",
+							"raw": "http://localhost:8080/courses/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -347,7 +392,7 @@
 							"port": "8080",
 							"path": [
 								"courses",
-								"2"
+								"1"
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
@@ -384,7 +429,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/students/2012010002",
+							"raw": "http://localhost:8080/students/2012010001",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -392,7 +437,7 @@
 							"port": "8080",
 							"path": [
 								"students",
-								"2012010002"
+								"2012010001"
 							]
 						}
 					},
@@ -419,7 +464,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"idMajor\" : 3,\n    \"name\" : \"Budi\",\n    \"gender\" : \"Laki-laki\",\n    \"address\" : \"Bandung\",\n    \"phoneNumber\" : \"082231232384\"\n}",
+							"raw": "{\n    \"idMajor\" : 2,\n    \"name\" : \"    Dodi   \",\n    \"gender\" : \"Laki-laki\",\n    \"address\" : \"Bandung\",\n    \"phoneNumber\" : \"0827438372934\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -442,7 +487,7 @@
 					"response": []
 				},
 				{
-					"name": "Update",
+					"name": "Update Data",
 					"event": [
 						{
 							"listen": "test",
@@ -470,7 +515,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/students/2012010002",
+							"raw": "http://localhost:8080/students/2012010001",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -478,7 +523,51 @@
 							"port": "8080",
 							"path": [
 								"students",
-								"2012010002"
+								"2012010001"
+							]
+						},
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Activated",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"active\" : false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/students/2012010001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"students",
+								"2012010001"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -514,7 +603,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/students/2012010001",
+							"raw": "http://localhost:8080/students/2012020001",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -522,7 +611,7 @@
 							"port": "8080",
 							"path": [
 								"students",
-								"2012010001"
+								"2012020001"
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
@@ -559,7 +648,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/grades/2",
+							"raw": "http://localhost:8080/grades/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -567,7 +656,7 @@
 							"port": "8080",
 							"path": [
 								"grades",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -594,7 +683,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"npm\": \"2012010002\",\n    \"idCourse\": 5\n}",
+							"raw": "{\n    \"npm\": \"2012010001\",\n    \"idCourse\": 3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -617,7 +706,7 @@
 					"response": []
 				},
 				{
-					"name": "Update",
+					"name": "Update Grade",
 					"event": [
 						{
 							"listen": "test",
@@ -637,7 +726,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n        \"npm\": \"2012010002\",\n        \"idCourse\": 2,\n        \"quiz1\": 100,\n        \"quiz2\": -2,\n        \"quiz3\": -1,\n        \"quiz4\": -1,\n        \"quiz5\": -1,\n        \"exam1\": -1,\n        \"exam2\": -1\n}",
+							"raw": "{\n        \"npm\": \"2012010002\",\n        \"idCourse\": 3,\n        \"quiz1\": 100,\n        \"quiz2\": -1,\n        \"quiz3\": -1,\n        \"quiz4\": -1,\n        \"quiz5\": -1,\n        \"exam1\": 100,\n        \"exam2\": -1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -645,7 +734,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/grades/4",
+							"raw": "http://localhost:8080/grades/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -653,7 +742,7 @@
 							"port": "8080",
 							"path": [
 								"grades",
-								"4"
+								"1"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -661,14 +750,14 @@
 					"response": []
 				},
 				{
-					"name": "Delete",
+					"name": "Update Active",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Successful DELETE request\", function () {",
-									"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+									"pm.test(\"Successful PUT request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
 									"});",
 									""
 								],
@@ -677,11 +766,11 @@
 						}
 					],
 					"request": {
-						"method": "DELETE",
+						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\n        \"active\" : false\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -689,7 +778,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/grades/2",
+							"raw": "http://localhost:8080/grades/1/activated",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -697,10 +786,11 @@
 							"port": "8080",
 							"path": [
 								"grades",
-								"2"
+								"1",
+								"activated"
 							]
 						},
-						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
 					},
 					"response": []
 				}

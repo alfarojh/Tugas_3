@@ -1,15 +1,15 @@
-package com.example.Tugas3.Model;
+package com.example.Tugas3.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Course {
-    private final byte id;      // ID Mata Kuliah
+    private final long id;      // ID Mata Kuliah
     private String name;        // Nama Mata Kuliah
-    private byte credit;        // Jumlah SKS
+    private Byte credit;        // Jumlah SKS
     private boolean isActive;   // Status aktif Mata Kuliah
     private boolean isDeleted;  // Status penghapusan Mata Kuliah
 
-    public Course(byte id, String name, byte credit) {
+    public Course(long id, String name, Byte credit) {
         this.id = id;
         this.name = name;
         this.credit = credit;
@@ -17,7 +17,7 @@ public class Course {
         this.isDeleted = false;
     }
 
-    public byte getId() {
+    public long getId() {
         return id;
     }
 
@@ -30,11 +30,11 @@ public class Course {
         this.name = name.trim();
     }
 
-    public byte getCredit() {
+    public Byte getCredit() {
         return credit;
     }
 
-    public void setCredit(byte credit) {
+    public void setCredit(Byte credit) {
         this.credit = credit;
     }
 

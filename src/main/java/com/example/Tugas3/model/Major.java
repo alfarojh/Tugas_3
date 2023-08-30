@@ -1,19 +1,19 @@
-package com.example.Tugas3.Model;
+package com.example.Tugas3.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Major {
-    private final byte id;      // ID Jurusan
+    private final long id;      // ID Jurusan
     private String name;        // Nama Jurusan
     private boolean isDeleted;  // Status terhapusnya Jurusan
 
-    public Major(byte id, String name) {
+    public Major(long id, String name) {
         this.id = id;
         this.name = name;
         this.isDeleted = false;
     }
 
-    public byte getId() {
+    public long getId() {
         return id;
     }
 

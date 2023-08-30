@@ -1,10 +1,14 @@
-package com.example.Tugas3.Validation;
+package com.example.Tugas3.validation;
 
 public class ValueValidation {
     private String message;
 
     public String getMessage() {
         return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     /**
@@ -15,10 +19,7 @@ public class ValueValidation {
      * @return True jika input tidak null atau kosong, dan false jika sebaliknya.
      */
     public boolean isNotNullOrEmpty(String input, String nameVar) {
-        if (input == null) {
-            message = "The value of `" + nameVar + "` cannot be null!";
-            return false;
-        } else if (input.trim().isEmpty()) {
+        if (input == null || input.trim().isEmpty()) {
             message = "The value of `" + nameVar + "` cannot be empty!";
             return false;
         }
@@ -33,7 +34,7 @@ public class ValueValidation {
      * @return          True jika input bukan bernilai 0 atau nol,
      *                  dan false jika sebaliknya.
      */
-    public boolean isNotZero(int input, String nameVar) {
+    public boolean isNotZero(long input, String nameVar) {
         if (input == 0) {
             message = "The value of `" + nameVar + "` cannot be zero!";
             return false;
@@ -49,7 +50,7 @@ public class ValueValidation {
      * @return          True jika input memiliki nilai positif,
      *                  dan false jika sebaliknya.
      */
-    public boolean isPositive(int input, String nameVar) {
+    public boolean isPositive(long input, String nameVar) {
         if (input < 0) {
             message = "The value of `" + nameVar + "` cannot be negative!";
             return false;
